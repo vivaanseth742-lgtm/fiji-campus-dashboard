@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiji Campus Bus & Weather Dashboard</title>
+
+<style>
+    /* -----------------------------
+       General Page Styling
+    ------------------------------*/
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #eaf4ff;
+        margin: 0;
+        padding: 30px;
+    }
+
+    .container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        text-align: center;
+        color: #004080;
+    }
+
+    .section {
+        margin-top: 25px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background: #0077cc;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #005fa3;
+    }
+
+    .output {
+        margin-top: 15px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .weather {
+        margin-top: 15px;
+        background: #f3f9ff;
+        padding: 15px;
+        border-left: 5px solid #0077cc;
+        border-radius: 6px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌴 Fiji Campus Bus & Weather Dashboard</h1>
+
+    <!-- ==========================
+         Bus Fare Calculator
+    =========================== -->
+    <div class="section">
+        <h2>Bus Fare Calculator</h2>
+
+        <label for="budget">
+            Enter your bus fare budget (FJD):
+        </label>
+
+        <input
+            type="number"
+            id="budget"
+            placeholder="Example: 15"
+            min="0"
+            step="0.01">
+
+        <button onclick="calculateRides()">
+            Calculate Rides
+        </button>
+
+        <div class="output" id="result"></div>
+    </div>
+
+    <!-- ==========================
+         Weather Section
+    =========================== -->
+    <div class="section">
+        <h2>Today's Weather - Suva</h2>
+
+        <div class="weather" id="weatherBox">
+            Loading weather...
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* ==================================================
+   Bus Fare Calculator
+   Each ride costs FJD $1.50
+================================================== */
+function calculateRides() {
+
+    // Read the user's input
+    const budgetInput = document.getElementById("budget").value;
+    const result = document.getElementById("result");
+
+    // Check if the input is empty
+    if (budgetInput.trim() === "") {
+        result.style.color = "red";
+        result.innerHTML = "Please enter a valid positive dollar amount.";
+        return;
+    }
+
+    // Convert the input into a number
+    const budget = parseFloat(budgetInput);
+
+    // Check if the number is invalid or negative
+    if (isNaN(budget) || budget < 0) {
+        result.style.color = "red";
+        result.innerHTML = "Please enter a valid positive dollar amount.";
+        return;
+    }
+
+    // Calculate the maximum number of whole bus rides
+    const rides = Math.floor(budget / 1.50);
+
+    // Display the result in green
+    result.style.color = "green";
+    result.innerHTML =
+        `You can afford <strong>${rides}</strong> bus ride(s).`;
+}
+
+/* ==================================================
+   Weather Display
+   This example shows a sample forecast.
+   To use live weather, connect an API such as:
+   https://open-meteo.com/
+================================================== */
+
+const weather = {
+    location: "Suva",
+    forecast: "Partly Cloudy",
+    temperature: 28,
+    humidity: 82
+};
+
+// Display the weather information
+document.getElementById("weatherBox").innerHTML = `
+    <strong>Location:</strong> ${weather.location}<br>
+    <strong>Forecast:</strong> ${weather.forecast}<br>
+    <strong>Temperature:</strong> ${weather.temperature}&deg;C<br>
+    <strong>Humidity:</strong> ${weather.humidity}%
+`;
+</script>
+
+</body>
+</html>
